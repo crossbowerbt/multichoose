@@ -6,12 +6,13 @@ int main(int argc, char** argv){
 
     int *a, *b;
     char **m;
-    int i,j,j_1,k,n,r;
+    int i,j,k,n,r;
 
     if (argc<3) {
         printf("usage: ./multi_erik k item_1 ... item_n\n");
         return 0;
     }
+    
     n = atoi(argv[1]);
     r = argc - 2;
 
@@ -19,35 +20,31 @@ int main(int argc, char** argv){
     a = malloc(n * sizeof(int));
     b = malloc(n * sizeof(int));
 
-    for (i=2;i<argc;i++)
-        m[i-1] = argv[i];
+    for(i=0; i < r; i++)
+	m[i] = argv[i+2];
 
-    for (i=1;i<=n;i++) {
-        a[i] = 1; b[i] = r;
+    for (i=0; i < n; i++) {
+        a[i] = 0;
+        b[i] = r-1;
     }
 
-    j=n;
     while(1){
         // emit multiset combination
-        for(i=1;i<=n;i++)
+
+	    for(i=0; i<n; i++)
             printf("%s ", m[a[i]]);
-        printf("\n");
-        j=n;
-        while(a[j]==b[j])j--;
-        if (j<=0) break;
-        j_1=j;
-        while(j_1<=n){
-            a[j_1]=a[j_1]+1;
-            k=j_1;
-            while(k<n) {
-                a[k+1]=a[k];
-                k++;
-            }
-            k++;
-            j_1=k;
-        }
+	    printf("\n");
+
+	    j = n - 1;
+        while(a[j] == b[j]) j--;
+
+	    if (j < 0) break;
+
+        a[j]++;
+	    for(k = j+1; k < n; k++)
+	        a[k] = a[j];
+	
     }
 
     return 0;
 }
-
